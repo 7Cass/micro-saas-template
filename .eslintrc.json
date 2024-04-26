@@ -1,0 +1,3 @@
+{
+  "extends": ["@rocketseat/esling-config/next", "next/core-web-vitals"]
+}
