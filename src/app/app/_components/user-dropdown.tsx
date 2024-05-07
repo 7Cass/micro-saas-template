@@ -12,10 +12,10 @@ import {
 import {
   ExitIcon,
   GearIcon,
-  MixerVerticalIcon,
   RocketIcon,
 } from "@radix-ui/react-icons";
 import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 
 type UserDropdownProps = {
   user: Session['user']
@@ -63,7 +63,7 @@ export function UserDropwdown({ user }: UserDropdownProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>
           <ExitIcon className="w-3 h-3 mr-3" />
           Log out
         </DropdownMenuItem>
