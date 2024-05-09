@@ -98,7 +98,7 @@ export const createCheckoutSession = async (userId: string, userEmail: string, u
             url: session.url
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         throw new Error('Error to create checkout session')
     }
 }
@@ -132,7 +132,7 @@ export const cancelSubscription = async (stripeCustomerId: string, userStripeSub
             url: session.url
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         throw new Error('Error to cancel subscription')
     }
 }

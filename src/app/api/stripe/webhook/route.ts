@@ -22,11 +22,10 @@ export async function POST(req: Request) {
             await handleProcessWebhookUpdatedSubscription(event.data);
             break;
         case 'customer.subscription.deleted':
-            console.log(event);
             await handleProccessWebhookDeleteSubscription(event.data);
             break;
         default:
-            console.log(`Unhandled event type ${event.type}`);
+            console.warn(`Unhandled event type ${event.type}`);
             break;
     }
 
