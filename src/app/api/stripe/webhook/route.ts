@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 
-import { handleProcessWebhookUpdatedSubscription, stripe } from "@/services/stripe";
+import { handleProccessWebhookDeleteSubscription, handleProcessWebhookUpdatedSubscription, stripe } from "@/services/stripe";
 import { headers } from "next/headers";
 
 export async function POST(req: Request) {
@@ -20,6 +20,10 @@ export async function POST(req: Request) {
         case 'customer.subscription.created':
         case 'customer.subscription.updated':
             await handleProcessWebhookUpdatedSubscription(event.data);
+            break;
+        case 'customer.subscription.deleted':
+            console.log(event);
+            await handleProccessWebhookDeleteSubscription(event.data);
             break;
         default:
             console.log(`Unhandled event type ${event.type}`);

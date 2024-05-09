@@ -16,11 +16,11 @@ export default async function Page() {
 
   return (
     <DashboardPage>
-      <DashboardPageHeader>
+      <DashboardPageHeader className="py-2.5">
         <DashboardPageHeaderTitle>Tasks</DashboardPageHeaderTitle>
         <DashboardPageHeaderNav>
           <TodoUpsertSheet>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="default">
               <PlusIcon className="w-4 h-4 mr-3" />
               Add Todo
             </Button>

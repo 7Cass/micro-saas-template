@@ -19,8 +19,8 @@ import { Logo } from "@/components/logo";
 import { Session } from "next-auth";
 
 type MainSidebarProps = {
-  user: Session['user']
-}
+  user: Session["user"];
+};
 
 export function MainSidebar({ user }: MainSidebarProps) {
   const pathname = usePathname();
@@ -32,22 +32,22 @@ export function MainSidebar({ user }: MainSidebarProps) {
   return (
     <DashboardSidebar>
       <DashboardSidebarHeader className="flex items-center gap-4">
-        <Logo />
-        <DashboardSidebarTitle>Todo</DashboardSidebarTitle>
+        <Logo className="bg-primary" />
+        <DashboardSidebarTitle>Tasked</DashboardSidebarTitle>
       </DashboardSidebarHeader>
       <DashboardSidebarMain className="flex flex-col flex-grow">
         <DashboardSidebarNav>
           <DashboardSidebarNavMain>
             <DashboardSidebarNavLink href="/app" active={isActive("/app")}>
               <HomeIcon className="w-3 h-3 mr-3" />
-              Tarefas
+              Tasks
             </DashboardSidebarNavLink>
             <DashboardSidebarNavLink
               href="/app/settings"
               active={isActive("/app/settings")}
             >
               <MixerVerticalIcon className="w-3 h-3 mr-3" />
-              Configurações
+              Settings
             </DashboardSidebarNavLink>
           </DashboardSidebarNavMain>
         </DashboardSidebarNav>
@@ -55,14 +55,14 @@ export function MainSidebar({ user }: MainSidebarProps) {
         <DashboardSidebarNav className="mt-auto">
           <DashboardSidebarNavHeader>
             <DashboardSidebarNavHeaderTitle>
-              Links extras
+              Extra Links
             </DashboardSidebarNavHeaderTitle>
           </DashboardSidebarNavHeader>
           <DashboardSidebarNavMain>
             <DashboardSidebarNavLink href="/">
-              Precisa de ajuda?
+              Need help?
             </DashboardSidebarNavLink>
-            <DashboardSidebarNavLink href="/">Site</DashboardSidebarNavLink>
+            <DashboardSidebarNavLink href="/">Website</DashboardSidebarNavLink>
           </DashboardSidebarNavMain>
         </DashboardSidebarNav>
       </DashboardSidebarMain>

@@ -14,7 +14,13 @@ import {
 } from "@/components/ui/form";
 import { SheetFooter } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { themeFormSchema } from "./schemas";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTheme } from "next-themes";
@@ -26,7 +32,7 @@ export function ThemeForm() {
     resolver: zodResolver(themeFormSchema),
     defaultValues: {
       theme: theme.systemTheme,
-    }
+    },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
@@ -44,7 +50,9 @@ export function ThemeForm() {
         <Card>
           <CardHeader>
             <CardTitle>Theme</CardTitle>
-            <CardDescription>Select the theme for the dashboard.</CardDescription>
+            <CardDescription>
+              Select the theme for the dashboard.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <FormField
@@ -55,7 +63,7 @@ export function ThemeForm() {
                   <FormMessage />
                   <RadioGroup
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    defaultValue={theme.theme}
                     className="grid max-w-md grid-cols-2 gap-8 pt-2"
                   >
                     <FormItem>
@@ -119,8 +127,8 @@ export function ThemeForm() {
 
         <SheetFooter className="mt-auto">
           <Button disabled={form.formState.isSubmitting} type="submit">
-            {form.formState.isSubmitting && 'Saving...'}
-            {!form.formState.isSubmitting && 'Save Changes'}
+            {form.formState.isSubmitting && "Saving..."}
+            {!form.formState.isSubmitting && "Save Changes"}
           </Button>
         </SheetFooter>
       </form>

@@ -5,9 +5,11 @@ import { auth } from "@/services/auth";
 export default async function Layout({ children }: PropsWithChildren) {
   const session = await auth();
 
+  if (!session?.user) return;
+
   return (
     <div className="grid grid-cols-[16rem_1fr]">
-      <MainSidebar user={session?.user}/>
+      <MainSidebar user={session?.user} />
 
       <main>{children}</main>
     </div>

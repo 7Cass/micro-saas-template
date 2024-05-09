@@ -9,17 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  ExitIcon,
-  GearIcon,
-  RocketIcon,
-} from "@radix-ui/react-icons";
+import { getUsernameInitials } from "@/lib/get-username-initials";
+import { ExitIcon, GearIcon, RocketIcon } from "@radix-ui/react-icons";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 
 type UserDropdownProps = {
-  user: Session['user']
-}
+  user: Session["user"];
+};
 
 export function UserDropwdown({ user }: UserDropdownProps) {
   return (
@@ -31,7 +28,7 @@ export function UserDropwdown({ user }: UserDropdownProps) {
         >
           <Avatar className="h-8 w-8">
             <AvatarImage src="/avatars/01.png" alt="user" />
-            <AvatarFallback>SC</AvatarFallback>
+            <AvatarFallback>{getUsernameInitials(user?.name)}</AvatarFallback>
           </Avatar>
 
           <div className="flex flex-col flex-1 space-y-1 text-left">

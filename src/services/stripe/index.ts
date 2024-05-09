@@ -1,6 +1,7 @@
 import { config } from "@/config";
 import Stripe from "stripe";
 import { prisma } from "../database";
+import { Console } from "console";
 
 export const stripe = new Stripe(config.stripe.secretKey as string, {
     apiVersion: '2024-04-10',
@@ -10,6 +11,11 @@ export const stripe = new Stripe(config.stripe.secretKey as string, {
 export const getStripeCustomerByEmail = async (email: string) => {
     const customers = await stripe.customers.list({ email });
     return customers.data[0];
+}
+
+export const getStripeCustomerByStripeId = async (stripeCustomerId: string) => {
+    const customer = await stripe.customers.retrieve(stripeCustomerId);
+    return customer;
 }
 
 export const createStripeCustomer = async (
@@ -48,11 +54,22 @@ export const createStripeCustomer = async (
 
 export const createCheckoutSession = async (userId: string, userEmail: string, userStripeSubscriptionId: string) => {
     try {
-        let customer = await createStripeCustomer({
-            email: userEmail
-        })
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                stripeCustomerId: true
+            },
+        });
 
-        console.log(userStripeSubscriptionId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        let customer = user.stripeCustomerId ? await getStripeCustomerByStripeId(user.stripeCustomerId as string) : await createStripeCustomer({
+            email: userEmail
+        });
 
         let subscriptions = await stripe.subscriptionItems.list({
             subscription: userStripeSubscriptionId,
@@ -83,6 +100,40 @@ export const createCheckoutSession = async (userId: string, userEmail: string, u
     } catch (error) {
         console.log(error);
         throw new Error('Error to create checkout session')
+    }
+}
+
+export const cancelSubscription = async (stripeCustomerId: string, userStripeSubscriptionId: string) => {
+    try {
+        const customer = await getStripeCustomerByStripeId(stripeCustomerId);
+
+        if (!customer) {
+            throw new Error('Customer not found');
+        }
+
+        const session = await stripe.billingPortal.sessions.create({
+            customer: customer.id,
+            return_url: 'http://localhost:3000/app/settings/billing',
+            flow_data: {
+                type: 'subscription_cancel',
+                after_completion: {
+                    type: 'redirect',
+                    redirect: {
+                        return_url: 'http://localhost:3000/app/settings/billing?success=true'
+                    }
+                },
+                subscription_cancel: {
+                    subscription: userStripeSubscriptionId
+                }
+            }
+        });
+
+        return {
+            url: session.url
+        }
+    } catch (error) {
+        console.log(error);
+        throw new Error('Error to cancel subscription')
     }
 }
 
@@ -124,7 +175,37 @@ export const handleProcessWebhookUpdatedSubscription = async (event: {
             stripeSubscriptionStatus,
             stripePriceId,
         },
+    });
+}
+
+export const handleProccessWebhookDeleteSubscription = async (event: { object: Stripe.Subscription }) => {
+    const stripeCustomerId = event.object.customer as string
+    const stripeSubscriptionId = event.object.id as string
+
+    const userExists = await prisma.user.findFirst({
+        where: {
+            OR: [
+                {
+                    stripeSubscriptionId,
+                },
+                {
+                    stripeCustomerId,
+                },
+            ],
+        },
+        select: {
+            id: true,
+        },
     })
+
+    if (!userExists) {
+        throw new Error('user of stripeCustomerId not found')
+    }
+
+    await stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        items: [{ price: config.stripe.plans.free.priceId }]
+    });
 }
 
 type Plan = {
@@ -151,12 +232,15 @@ export const getPlanByPrice = (priceId: string) => {
         throw new Error(`Plan not found for priceId: ${priceId}`)
     }
 
-    console.log(plan);
-
     return {
         name: planKey,
         quota: plan.quota,
     }
+}
+
+export const getSubscriptionById = async (subscriptionId: string) => {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    return subscription;
 }
 
 export const getUserCurrentPlan = async (userId: string) => {
@@ -166,6 +250,7 @@ export const getUserCurrentPlan = async (userId: string) => {
         },
         select: {
             stripePriceId: true,
+            stripeSubscriptionId: true
         },
     })
 
@@ -173,7 +258,12 @@ export const getUserCurrentPlan = async (userId: string) => {
         throw new Error('User or user stripePriceId not found')
     }
 
-    const plan = getPlanByPrice(user.stripePriceId)
+    if (!user || !user.stripeSubscriptionId) {
+        throw new Error('User or user subscriptionId not found')
+    }
+
+    const plan = getPlanByPrice(user.stripePriceId);
+    const subscription = await getSubscriptionById(user.stripeSubscriptionId);
 
     const tasksCount = await prisma.todo.count({
         where: {
@@ -187,6 +277,9 @@ export const getUserCurrentPlan = async (userId: string) => {
 
     return {
         name: plan.name,
+        subscription_status: subscription.status,
+        canceled_at: subscription.canceled_at,
+        cancel_at: subscription.cancel_at,
         quota: {
             TASKS: {
                 available: availableTasks,
