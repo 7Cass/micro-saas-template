@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center" >
+  <h1>Tasked</h1>
+</div>
 
-## Getting Started
+<div align="center">
+  Welcome to Tasked, a micro SaaS todo list application built with <a href="https://nextjs.org/">Next.js</a>, <a href="https://www.prisma.io/">Prisma</a>, and <a href="https://stripe.com">Stripe</a>. This project is designed for educational purposes to help learn and master this technology stack, providing a solid template for future projects.
+</div>
 
-First, run the development server:
+<div align="center">
+  <!-- TO ADD more Badges use -> https://shields.io/ -->
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/7cass/micro-saas-template">
+  <img alt="Repo License" src="https://img.shields.io/github/license/7cass/micro-saas-template">
+  <!-- <img alt="Website Status" src="https://img.shields.io/website?url=https%3A%2F%2F==NAME==.vercel.app"> -->
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  </div>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Table of Contents
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- [🚀 Features](#features)
+- [🛠️ Technologies Used](#technologies-used)
+- [🔒 License](#license)
+- [🙏🏻 Acknowledgements](#acknowledgements)
+- [✉️ Contact](#contact)
+- [🏗️ Progress](#related-youtube-videos-progress)
 
-## Learn More
+<a id="features"></a>
 
-To learn more about Next.js, take a look at the following resources:
+## Features 🚀
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- User authentication and authorization with Magic Link
+- Personalized todo lists for each user
+- Real-time updates without needing to refresh the page
+- Integration with Stripe for handling subscriptions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<a id="technologies-used"></a>
 
-## Deploy on Vercel
+## Technologies Used 🛠️
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Next.js](https://nextjs.org/) - A React framework for building server-side rendered and static web applications.
+- [Prisma](https://www.prisma.io/) - Next-generation ORM for Node.js and TypeScript, making database access easy with an auto-generated query builder.
+- [Stripe](https://stripe.com) - A comprehensive suite of APIs that powers commerce for businesses of all sizes, particularly for handling online payments.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs without leaving your HTML.
+- [Next Auth](https://next-auth.js.org/) - A complete solution for Next.js applications to handle authentication and authorization.
+- [React Hook Form](https://react-hook-form.com/) - A performant, flexible, and extensible forms library for React that uses hooks.
+- [Zod](https://github.com/colinhacks/zod) - A TypeScript-first schema validation library that ensures type safety at runtime and compile time.
+- [Nodemailer](https://nodemailer.com/about/) - A module for Node.js applications to send emails easily.
+- [TypeScript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static types to the language, enhancing code quality and understandability.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License 🔒
+
+<a id="license"></a>
+
+The Tasked project is licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of the license.
